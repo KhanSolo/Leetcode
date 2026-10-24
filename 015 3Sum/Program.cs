@@ -7,10 +7,12 @@ public class Solution {
         if(nums.Length < 3 || nums.Length > 3000) return [];
         // 3 <= nums.length <= 3000
         // -10^5 <= nums[i] <= 10^5
-        var result = new HashSet<IList<int>>();
+        var result = new List<IList<int>>();
         Array.Sort(nums);
         for(var i = 0; i<nums.Length-2; ++i)
         {
+            if (i>0 && nums[i] == nums[i-1]) continue; // avoiding duplicates since nums is sorted
+
             var a = nums[i];
             var l = i+1;
             var r = nums.Length - 1;
@@ -19,11 +21,17 @@ public class Solution {
                 (var b, var c) = (nums[l], nums[r]);
                 if(a + b + c == 0) // a+b+c=0
                 {
-                    var three = new Three(a, b, c);
+                    var three = new List<int>(){a, b, c};
                     result.Add(three);
-                    break;
-                }
+                    
+                    l++;
+                    r--;
 
+                    // removing duplicates for repeating numbers after moving 2 pointers
+                    while (l<r && nums[l] == nums[l-1]) l++;
+                    while (l<r && nums[r] == nums[r+1]) r--;
+
+                } else
                 // should be: -a = b+c
                 if(-a > b + c) // -a > b + c
                 {
@@ -34,7 +42,7 @@ public class Solution {
             }
         }
 
-        return [.. result];
+        return result;
     }
 
     public static void Main()
@@ -74,6 +82,10 @@ public class Solution {
             AssertResult(res, 1, "Example 4");
             // Notice that the solution set must not contain duplicate triplets.
         }
+        {
+            var res = sol.ThreeSum([-2,0,1,1,2]);
+            AssertResult(res, 2, "Example 5");
+        }
 
         Console.WriteLine("Tests passed");
     }
@@ -87,25 +99,6 @@ public class Solution {
             Debug.Assert(result[i].IsZero());
         }
     }
-}
-
-public class Three : List<int>, IEquatable<Three>
-{
-    public Three(int a, int b, int c) : base(Sorted(a, b, c)) {}
-
-    static int[] Sorted(int a, int b, int c)
-    {
-        var arr = new [] {a,b,c};
-        Array.Sort(arr);
-        return arr;
-    }
-
-    public bool Equals(Three? other)
-        =>
-            other is not null && this[0] == other[0] && this[1] == other[1] && this[2] == other[2];    
-
-    public override bool Equals(object? obj) => obj is Three other && Equals(other);
-    public override int GetHashCode() => HashCode.Combine(this[0], this[1], this[2]);    
 }
 
 public static class IEnumerableExtensions

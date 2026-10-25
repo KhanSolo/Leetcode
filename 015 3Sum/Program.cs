@@ -11,6 +11,11 @@ public class Solution {
         Array.Sort(nums);
         for(var i = 0; i<nums.Length-2; ++i)
         {
+            // No possible triplet can sum to zero
+            // if the smallest remaining number is positive.
+            if (nums[i] > 0)
+                break;
+
             if (i>0 && nums[i] == nums[i-1]) continue; // avoiding duplicates since nums is sorted
 
             var a = nums[i];

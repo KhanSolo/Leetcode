@@ -1,0 +1,10 @@
+{
+    "label": "build",
+    "type": "process",
+    "command": "dotnet",
+    "args": [
+        "build",
+        "${workspaceFolder}/SquaresOfSortedArrays.csproj"
+    ],
+    "problemMatcher": "$msCompile"
+}

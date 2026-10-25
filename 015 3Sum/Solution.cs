@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿/*
+	2 pointers
+	O(n^2) complexity
+	
+*/
+
+using System.Collections.Generic;
 using System.Diagnostics;
 
 public class Solution {

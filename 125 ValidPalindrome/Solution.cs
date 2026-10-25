@@ -1,4 +1,10 @@
-﻿using System.Diagnostics;
+﻿/*
+    2 pointers
+    O(n) complexity
+    O(1) memory
+*/
+
+using System.Diagnostics;
 
 public class Solution {
     public bool IsPalindrome(string s) {

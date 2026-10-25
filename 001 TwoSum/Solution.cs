@@ -1,3 +1,8 @@
+/*
+	Hash tables
+	O(n) complexity
+	O(n) memory
+*/
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -1,5 +1,7 @@
 ﻿/*
     2 pointers
+    O(n) complexity
+    O(1) memory
 */
 
 using System.Diagnostics;

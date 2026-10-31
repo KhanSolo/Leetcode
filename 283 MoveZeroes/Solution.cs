@@ -9,7 +9,7 @@ public class Solution {
         int j;
         for(j=0; j<nums.Length; ++j)
         {
-            if(nums[j]==0) break;
+            if(nums[j]==0) break; // finding first zero
         }
 
         for (int i=j; i<nums.Length; ++i)
@@ -18,6 +18,19 @@ public class Solution {
             {
                 (nums[i], nums[j]) = (nums[j], nums[i]);
                 j++;
+            }
+        }
+    }
+
+    public void MoveZeroes_(int[]nums)
+    {
+        int j=0;
+        for (int i = 0; i < nums.Length; ++i)
+        {
+            if (nums[i] != 0)
+            {
+                (nums[i], nums[j]) = (nums[j], nums[i]); // it strarts to swap if even no zero case
+                j++;                
             }
         }
     }

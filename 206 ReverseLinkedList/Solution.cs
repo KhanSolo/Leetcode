@@ -1,16 +1,12 @@
-﻿
-
-//  Definition for singly-linked list.
+﻿//  Definition for singly-linked list.
 using System.Diagnostics;
 
-public class ListNode {
-     public int val;
-     public ListNode? next;
-     public ListNode(int val=0, ListNode? next=null) {
-         this.val = val;
-         this.next = next;
-     }
- }
+public class ListNode
+{
+    public int val;
+    public ListNode? next;
+    public ListNode(int v = 0, ListNode? n = null) => (val, next) = (v, n);
+}
  
 public class Solution {
     public ListNode ReverseList(ListNode head) {
@@ -34,28 +30,24 @@ public class Solution {
         sol.Assert([1,2,3,4,5], [5,4,3,2,1]);
         sol.Assert([1,2], [2,1]);
         sol.Assert([], []);
-
         Console.WriteLine("Tests passed!");
     }
 
     public void Assert(int[] input, int[] output)
     {
-        // create a linked list
-        ListNode head = null!;
-        ListNode? prev = null;
-        for(int i=0; i<input.Length; i++)
-        {
-            var node = new ListNode(input[i]);
-
-            if(i is 0) head = node;
-            if(prev is not null) prev.next = node;
-            prev = node;
-        }
+        var head = CreateLinkedList(input);
 
         // act
         var result = ReverseList(head);
 
         // assert
+        var actual = ToArray(result);
+
+        AssertEqual(actual, output);
+    }
+    
+    private static IReadOnlyCollection<int> ToArray(ListNode result)
+    {
         var actual = new List<int>();
         var curNode = result;
         while (curNode is not null)
@@ -63,16 +55,38 @@ public class Solution {
             actual.Add(curNode.val);
             curNode = curNode.next;
         }
+        return actual;
+    }
 
-        Debug.Assert(actual.Count == output.Length);
-        for(int i=0; i<actual.Count; i++)
+    private static void AssertEqual<T>(IReadOnlyCollection<T> actual, IReadOnlyCollection<T> expected)
+    {
+        Debug.Assert(actual.Count == expected.Count);
+
+        using var actualEnumerator = actual.GetEnumerator();
+        using var expectedEnumerator = expected.GetEnumerator();
+
+        int i = 0;
+        while (actualEnumerator.MoveNext() && expectedEnumerator.MoveNext())
         {
-            Debug.Assert(actual[i] == output[i], $"i: {i}");
+            Debug.Assert(
+                EqualityComparer<T>.Default.Equals(actualEnumerator.Current, expectedEnumerator.Current),
+                $"i: {i}");
+
+            i++;
         }
     }
-}
 
-static class Extension
-{
-    
+    private static ListNode CreateLinkedList(int[] input)
+    {
+        ListNode head = null!;
+        ListNode? prev = null;
+        for(int i=0; i<input.Length; i++)
+        {
+            var node = new ListNode(input[i]);
+            if(i is 0) head = node;
+            if(prev is not null) prev.next = node;
+            prev = node;
+        }
+        return head;
+    }
 }

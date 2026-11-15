@@ -1,13 +1,10 @@
 ﻿using System.Diagnostics;
 
-//Definition for singly-linked list.
-public class ListNode {
+public class ListNode
+{
     public int val;
-    public ListNode next;
-    public ListNode(int val=0, ListNode next=null) {
-        this.val = val;
-        this.next = next;
-    }
+    public ListNode? next;
+    public ListNode(int v = 0, ListNode? n = null) => (val, next) = (v, n);
 }
 
 public class Solution {
@@ -58,6 +55,13 @@ public class Solution {
         var result = MergeTwoLists(head1, head2);
 
         // assert
+        var actual = ToArray(result);
+
+        AssertEqual(actual, expected);
+    }
+
+    private static IReadOnlyCollection<int> ToArray(ListNode result)
+    {
         var actual = new List<int>();
         var curNode = result;
         while (curNode is not null)
@@ -65,22 +69,34 @@ public class Solution {
             actual.Add(curNode.val);
             curNode = curNode.next;
         }
+        return actual;
+    }
 
-        Debug.Assert(actual.Count == expected.Length);
-        for(int i=0; i<actual.Count; i++)
+    private static void AssertEqual<T>(IReadOnlyCollection<T> actual, IReadOnlyCollection<T> expected)
+    {
+        Debug.Assert(actual.Count == expected.Count);
+
+        using var actualEnumerator = actual.GetEnumerator();
+        using var expectedEnumerator = expected.GetEnumerator();
+
+        int i = 0;
+        while (actualEnumerator.MoveNext() && expectedEnumerator.MoveNext())
         {
-            Debug.Assert(actual[i] == expected[i], $"i: {i}");
+            Debug.Assert(
+                EqualityComparer<T>.Default.Equals(actualEnumerator.Current, expectedEnumerator.Current),
+                $"i: {i}");
+
+            i++;
         }
     }
 
-    private ListNode CreateLinkedList(int[] input)
+    private static ListNode CreateLinkedList(int[] input)
     {
         ListNode head = null!;
         ListNode? prev = null;
         for(int i=0; i<input.Length; i++)
         {
             var node = new ListNode(input[i]);
-
             if(i is 0) head = node;
             if(prev is not null) prev.next = node;
             prev = node;

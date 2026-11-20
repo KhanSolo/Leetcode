@@ -14,25 +14,27 @@ public class LRUCache {
     
     private const int NotFound = -1;
     public int Get(int key) {
-
+        // getting a value leads it to be first among recently used
+        // todo implement a logic
         return NotFound;
     }
     
     public void Put(int key, int value) {
-        
+        // making a new value to be first among recently used
+        // doing eviction for lru value if it exceeds capacity
+        // todo implement a logic
     }
 
+    // double linked list node
     class ListNode
     {
-        public int value;
-        public ListNode? next = null;
-        public ListNode? prev = null;
+        public int val;
+        public ListNode? nxt;
+        public ListNode? prv;
+
         public ListNode(int value=default, ListNode? prev=null, ListNode? next=null)
-        {
-            this.value = value;
-            this.prev = prev;
-            this.next = next;
-        }
+            =>
+                (val, prv, nxt) = (value, prev, next);
     }
 }
 

@@ -1,5 +1,4 @@
-﻿
-
+﻿using System;
 using System.Diagnostics;
 
 public class Solution
@@ -41,33 +40,18 @@ public class Solution
     public static void Main()
     {
         var sol = new Solution();
-        {
-            // Input: x = 123
-            // Output: 321 
-            var res = sol.Reverse(123);
-            Debug.Assert(res == 321);
-        }
-        {
-            // Input: x = -123
-            // Output: -321
-            var res = sol.Reverse(-123);
-            Debug.Assert(res == -321);
-        }
-        {
-            // Input: x = 120
-            // Output: 21
-            var res = sol.Reverse(120);
-            Debug.Assert(res == 21);
-        }
-        {
-            var res = sol.Reverse(1_147_483_647);
-            Debug.Assert(res == 0);
-        }
-        {
-            var res = sol.Reverse(-2_147_483_648);
-            Debug.Assert(res == 0);
-        }
+        sol.Assert(123, 321);
+        sol.Assert(-123, -321);
+        sol.Assert(120, 21);
+        sol.Assert(1_147_483_647, 0);
+        sol.Assert(-2_147_483_648, 0);
 
         Console.WriteLine("Tests passed!");
+    }
+
+    private void Assert(int x, int expected)
+    {
+        var actual = Reverse(x);
+        Debug.Assert(actual == expected);
     }
 }
